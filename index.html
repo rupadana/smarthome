@@ -1,0 +1,134 @@
+
+<html lang="en">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="./css/index.css">
+  <title>ESP8266 with Anto</title>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+  <script
+    src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</head>
+<body>
+<h2>Control LED</h2>
+
+<div>
+  <label class="switch">
+    <input type="checkbox" id="led1">
+    <span class="slider"></span>
+  </label>
+  <p>LED 1</p>
+</div>
+
+<div>
+  <label class="switch">
+    <input type="checkbox" id="led2">
+    <span class="slider"></span>
+  </label>
+  <p>LED 2</p>
+</div>
+
+<div>
+  <label class="switch">
+    <input type="checkbox" id="led3">
+    <span class="slider"></span>
+  </label>
+  <p>LED 3</p>
+</div>
+
+<div>
+  <label class="switch">
+    <input type="checkbox" id="led4">
+    <span class="slider"></span>
+  </label>
+  <p>LED 4</p>
+</div>
+<script>
+
+  document.getElementById('led1').addEventListener('change', function() {
+    console.log('LED 1:', this.checked);
+    // Add your code to control LED 1
+
+    if(this.checked) {
+      turn_on('LED1');
+    } else {
+      turn_off('LED1');
+    }
+  });
+
+  document.getElementById('led2').addEventListener('change', function() {
+    console.log('LED 2:', this.checked);
+    // Add your code to control LED 2
+    if(this.checked) {
+      turn_on('LED2');
+    } else {
+      turn_off('LED2');
+    }
+  });
+
+  document.getElementById('led3').addEventListener('change', function() {
+    console.log('LED 3:', this.checked);
+    if (this.checked) {
+      turn_on('LED3');
+    } else {
+      turn_off('LED3');
+    }
+    // Add your code to control LED 3
+  });
+
+  document.getElementById('led4').addEventListener('change', function() {
+    console.log('LED 4:', this.checked);
+    if(this.checked) {
+      turn_on('LED4');
+    } else {
+      turn_off('LED4');
+    }
+
+    // Add your code to control LED 4
+  });
+
+  function turn_on(led){
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("GET",
+      "https://api.anto.io/channel/set/6BicdKZoiUa3K2KzI7pFTarZhHjuLFLeldjGW6Ud/smarthome/"+led+"/1", true);
+    xhttp.send();
+  }
+
+
+
+  function turn_off(led){
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+// Typical action to be performed when the document is ready:
+//         document.getElementById("demo").innerHTML = xhttp.responseText;
+      }
+    };
+    xhttp.open("GET",
+      "https://api.anto.io/channel/set/6BicdKZoiUa3K2KzI7pFTarZhHjuLFLeldjGW6Ud/smarthome/"+led+"/0", true);
+    xhttp.send();
+  }
+
+
+  for(let i=1;i<5;i++){
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+// Typical action to be performed when the document is ready:
+//         document.getElementById("demo").innerHTML = xhttp.responseText;
+        console.log(xhttp.responseText, "https://api.anto.io/channel/get/6BicdKZoiUa3K2KzI7pFTarZhHjuLFLeldjGW6Ud/smarthome/LED"+i)
+      }
+    };
+    xhttp.open("GET",
+      "https://api.anto.io/channel/get/6BicdKZoiUa3K2KzI7pFTarZhHjuLFLeldjGW6Ud/smarthome/LED"+i, true);
+    xhttp.send();
+  }
+
+</script>
+</body>
+</html>
